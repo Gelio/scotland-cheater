@@ -1,7 +1,7 @@
 import Graph from './Graph';
 import ConnectionFactory from './connections/ConnectionFactory';
 
-export default class MapLoader {
+export default class GraphFactory {
   createGraphFromData(data) {
     const graph = new Graph(data.stationsCount);
     const connectionFactory = new ConnectionFactory();

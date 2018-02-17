@@ -14,8 +14,9 @@
 
 <script>
 import Inputs from './components/Inputs.vue';
-import MapLoader from './move-predicting/MapLoader';
+import GraphFactory from './move-predicting/GraphFactory';
 import MoveSimulator from './move-predicting/MoveSimulator';
+import CSVMapLoader from './move-predicting/CSVMapLoader';
 
 export default {
   name: 'app',
@@ -23,11 +24,12 @@ export default {
     Inputs
   },
   async created() {
-    const mapData = await fetch('/map-data.json').then(res => res.json());
+    const csvMapLoader = new CSVMapLoader();
+    const mapData = await csvMapLoader.loadFromUrl('/map-data.csv');
 
-    const mapLoader = new MapLoader();
+    const graphFactory = new GraphFactory();
     this.loading = false;
-    this.graph = mapLoader.createGraphFromData(mapData);
+    this.graph = graphFactory.createGraphFromData(mapData);
   },
   methods: {
     simulate(lastKnownStationId, stepsTaken) {
