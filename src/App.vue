@@ -33,10 +33,13 @@ export default {
   async created() {
     const csvMapLoader = new CSVMapLoader();
     const mapData = await csvMapLoader.loadFromUrl('/map-data.csv');
+    const mapJsonData = await fetch('/map-data.json').then(res => res.json());
+
+    const mergedMapData = Object.assign({}, mapData, mapJsonData);
 
     const graphFactory = new GraphFactory();
+    this.graph = graphFactory.createGraphFromData(mergedMapData);
     this.loading = false;
-    this.graph = graphFactory.createGraphFromData(mapData);
   },
   methods: {
     simulate(lastKnownStationId, stepsTaken) {

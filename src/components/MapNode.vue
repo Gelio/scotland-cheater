@@ -1,5 +1,5 @@
 <template>
-  <div class="map-node" :style="{ top: mutableTop + '%', left: mutableLeft + '%' }" @mousedown="startDrag">
+  <div class="map-node" :style="{ top: top + '%', left: left + '%' }" @mousedown="startDrag">
     {{ stationId }}
   </div>
 </template>
@@ -12,12 +12,6 @@ export default {
     left: Number,
     stationId: Number
   },
-  data() {
-    return {
-      mutableTop: this.top,
-      mutableLeft: this.left
-    };
-  },
   methods: {
     startDrag(dragEvent) {
       const mapElement = dragEvent.target.parentNode;
@@ -26,14 +20,16 @@ export default {
       const mapWidth = mapElement.clientWidth;
       const mapHeight = mapElement.clientHeight;
 
+      this.endDrag();
       this.mouseMoveListener = mouseEvent => {
         const x = mouseEvent.clientX;
         const y = mouseEvent.clientY;
 
-        this.mutableTop = (y - mapOffsetTop) / mapHeight * 100;
-        this.mutableLeft = (x - mapOffsetLeft) / mapWidth * 100;
+        this.$emit('drag', {
+          top: (y - mapOffsetTop) / mapHeight * 100,
+          left: (x - mapOffsetLeft) / mapWidth * 100
+        });
       };
-      this.endDrag();
       window.addEventListener('mousemove', this.mouseMoveListener);
       window.addEventListener('mouseup', this.endDrag);
     },

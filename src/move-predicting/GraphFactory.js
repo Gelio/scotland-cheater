@@ -6,6 +6,10 @@ export default class GraphFactory {
     const graph = new Graph(data.stationsCount);
     const connectionFactory = new ConnectionFactory();
 
+    data.stations.forEach(station => {
+      graph.getStationById(station.stationId).position = station.position;
+    });
+
     data.connections.forEach(connection => {
       const stationA = graph.getStationById(connection.stationA);
       const stationB = graph.getStationById(connection.stationB);

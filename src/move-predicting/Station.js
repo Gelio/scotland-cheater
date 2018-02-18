@@ -5,6 +5,11 @@ export default class Station {
   constructor(id) {
     this.id = id;
 
+    this.position = {
+      top: 0,
+      left: 0
+    };
+
     /** @type {Connection[]} */
     this.connections = [];
   }
